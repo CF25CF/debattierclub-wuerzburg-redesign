@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dcw",
+      "runtimeExecutable": "/bin/sh",
+      "runtimeArgs": ["-c", "unset VIRTUAL_ENV PYTHONHOME; exec npx -y http-server . -p 8765 -c-1 --silent"],
+      "port": 8765
+    }
+  ]
+}
