@@ -170,7 +170,7 @@ img{max-width:100%;display:block}
 
 /* kontakt */
 .kontakt{text-align:center;padding:130px 36px}
-.kontakt h2{margin-bottom:1.6em}
+.kontakt h2{margin-bottom:1.1em}
 .contact-list{display:flex;flex-direction:column;align-items:center;gap:14px}
 .contact-row{display:flex;align-items:center;gap:10px}
 .contact-btn{
