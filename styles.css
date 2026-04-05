@@ -105,7 +105,9 @@ img{max-width:100%;display:block}
 
 /* sections */
 .section{padding:110px 36px}
-#ueber{padding:180px 36px 170px}
+#ueber{padding:230px 36px 130px}
+#ueber .two-col{grid-template-columns:.85fr 1.6fr;gap:56px}
+#ueber .section-inner{max-width:1180px}
 .section-alt{background:#f1ebe0}
 .section-inner{max-width:1080px;margin:0 auto}
 .section-sub{color:var(--muted);font-size:1.05rem;margin:-.3em 0 2em;max-width:60ch}
