@@ -12,7 +12,9 @@
   --sans:"Inter", -apple-system, system-ui, sans-serif;
 }
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
 html,body{margin:0;padding:0}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 body{
   background:var(--bg);
   color:var(--ink);
