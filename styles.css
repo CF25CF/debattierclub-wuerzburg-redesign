@@ -204,26 +204,24 @@ img{max-width:100%;display:block}
   font-size:.9rem;color:var(--muted);
   background:var(--bg);
 }
-.site-footer a{color:var(--muted)}
+.site-footer a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 .site-footer a:hover{color:var(--accent)}
-.site-footer .credit-link{text-decoration:underline;text-underline-offset:3px}
 
 /* responsive */
 @media (max-width: 860px){
-  .site-header{padding:12px 16px}
-  .site-header nav{gap:14px;font-size:.82rem}
-  .brand-text{display:none}
-  .hero{min-height:auto;padding-bottom:120px}
-  .hero-img{height:52vh;min-height:340px;inset:auto 0 120px 0}
+  .site-header{padding:14px 20px;justify-content:center}
+  .site-header nav{display:none}
+  .brand-text{display:inline}
+  .hero{min-height:62vh;overflow:visible}
   .hero-card{
-    position:static;width:calc(100% - 32px);margin:-70px auto 0;
-    padding:24px 22px 26px;border-radius:16px;
-    box-shadow:0 20px 50px -20px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.1);
+    left:16px;right:16px;bottom:-50px;width:auto;
+    padding:22px 22px 24px;border-radius:16px;
+    box-shadow:0 20px 50px -18px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.12);
   }
-  .hero-card h1{font-size:1.65rem}
+  .hero-card h1{font-size:1.6rem}
   .eyebrow{font-size:.68rem;letter-spacing:.18em}
   .section{padding:72px 20px}
-  #ueber{padding:96px 20px 80px}
+  #ueber{padding:120px 20px 80px}
   #ueber .two-col{grid-template-columns:1fr;gap:28px}
   #ueber .section-inner{max-width:560px}
   .two-col,.two-col.reverse{grid-template-columns:1fr;gap:32px}
@@ -240,8 +238,8 @@ img{max-width:100%;display:block}
   .vorstand-img{max-height:400px}
 }
 @media (max-width: 460px){
-  .site-header nav{gap:10px;font-size:.76rem}
-  .site-header nav a{padding:0}
+  .brand-text{font-size:1.1rem}
+  .brand-mark{width:40px;height:40px}
   .hero-card h1{font-size:1.4rem}
   .hero-card{padding:20px 18px 22px}
   h2{font-size:1.55rem}
