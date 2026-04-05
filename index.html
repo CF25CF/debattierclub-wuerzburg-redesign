@@ -117,7 +117,7 @@
         </button>
       </div>
       <div class="contact-row">
-        <a class="btn btn-primary contact-btn" href="https://www.instagram.com/debattierclub.wuerzburg/" target="_blank" rel="noopener">
+        <a class="btn btn-primary contact-btn instagram-link" href="https://www.instagram.com/debattierclub.wuerzburg/" target="_blank" rel="noopener">
           <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/></svg>
           <span>Instagram</span>
         </a>
@@ -135,6 +135,24 @@
             btn.classList.add('copied');
             setTimeout(function(){ btn.classList.remove('copied'); }, 1600);
           }).catch(function(){});
+        });
+      });
+      document.querySelectorAll('.instagram-link').forEach(function(a){
+        a.addEventListener('click', function(e){
+          if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)){
+            e.preventDefault();
+            var web = a.href;
+            var app = 'instagram://user?username=debattierclub.wuerzburg';
+            var fallback = setTimeout(function(){
+              window.location.href = web;
+            }, 1200);
+            var cancel = function(){ clearTimeout(fallback); };
+            document.addEventListener('visibilitychange', function(){
+              if(document.hidden) cancel();
+            }, {once:true});
+            window.addEventListener('pagehide', cancel, {once:true});
+            window.location.href = app;
+          }
         });
       });
     </script>
