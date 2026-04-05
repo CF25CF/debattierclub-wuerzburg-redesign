@@ -170,8 +170,22 @@ img{max-width:100%;display:block}
 
 /* kontakt */
 .kontakt{text-align:center;padding:130px 36px}
-.kontakt .cta-row{justify-content:center;flex-direction:column;align-items:center;gap:12px}
-.kontakt .cta-row .btn{min-width:280px}
+.kontakt h2{margin-bottom:1.6em}
+.contact-list{
+  display:flex;flex-direction:column;align-items:center;gap:14px;
+}
+.contact-item{
+  display:inline-flex;align-items:center;gap:14px;
+  padding:15px 28px;
+  min-width:340px;
+  background:var(--accent);color:#fff;
+  border-radius:999px;
+  font-weight:600;font-size:.98rem;
+  border:1.5px solid var(--accent);
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.contact-item:hover{background:var(--accent-soft);border-color:var(--accent-soft);color:#fff;transform:translateY(-1px)}
+.contact-icon{width:20px;height:20px;flex-shrink:0}
 
 /* footer */
 .site-footer{
