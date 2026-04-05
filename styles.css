@@ -12,7 +12,7 @@
   --sans:"Inter", -apple-system, system-ui, sans-serif;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:90px}
+html{scroll-behavior:smooth;scroll-padding-top:90px;background:#faf7f2}
 html,body{margin:0;padding:0}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 body{
@@ -226,7 +226,7 @@ img{max-width:100%;display:block}
   #ueber .section-inner{max-width:560px}
   .two-col,.two-col.reverse{grid-template-columns:1fr;gap:32px}
   .cards{grid-template-columns:1fr}
-  .kontakt{padding:90px 20px}
+  .kontakt{padding:80px 20px 60px}
   .kontakt h2{font-size:1.75rem;margin-bottom:1.3em}
   .contact-row{width:100%;justify-content:center}
   .contact-btn{min-width:0;flex:1;max-width:260px}
