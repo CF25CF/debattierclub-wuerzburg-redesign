@@ -2,6 +2,8 @@
 
 Ein schlankerer, moderner Entwurf für die Website des [Debattierclub Würzburg](https://www.debattierclub-wuerzburg.de/) (Colloquia Herbipolensia e.V.).
 
+**Live:** https://cf25cf.github.io/debattierclub-wuerzburg-redesign/
+
 Statische Seite — einfach `index.html` im Browser öffnen.
 
 ## Was wurde geändert
