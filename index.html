@@ -239,7 +239,7 @@
       var titel = row['Titel'] || '';
       var uhrzeit = row['Uhrzeit'] || '';
       var ort = row['Ort'] || '';
-      var muted = (tag === '\u2726') ? ' card-muted' : '';
+      var muted = (i === rows.length - 1) ? ' card-muted' : '';
       html += '<article class="card' + muted + '">';
       html += '<div class="card-day">' + tag + '</div>';
       html += '<h3>' + titel + '</h3>';
