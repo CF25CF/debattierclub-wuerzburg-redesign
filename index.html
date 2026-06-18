@@ -138,10 +138,7 @@
 
 <script>
 (function() {
-  var PUB_KEY = '2PACX-1vRqAVe-TkalyhTUWDQ-7JvhbDl7eP2hNFjQ0USyTES3UHxdkM-rkgkvlwygIudv1jVLegdRhk3d0uiL';
-  var BASE = 'https://docs.google.com/spreadsheets/d/e/' + PUB_KEY + '/pub?output=csv';
-  var GID_VORSTAND = '0';
-  var GID_TERMINE = '1792033316';
+  var SHEET_ID = '1Ak6SNMgtE91sAA13XTsr9GhiuPjEjDayfpyzAdShG8o';
 
   // Reiner Text: HTML-Tags und Formatierung entfernen
   function clean(str) {
@@ -185,17 +182,19 @@
     return result;
   }
 
-  function fetchSheet(gid, callback) {
-    fetch(BASE + '&gid=' + gid)
+  function fetchSheet(sheetName, callback) {
+    var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
+              '/gviz/tq?tqx=out:csv&sheet=' + encodeURIComponent(sheetName);
+    fetch(url)
       .then(function(r) { return r.text(); })
       .then(function(text) { callback(parseCSV(text)); })
       .catch(function(err) {
-        console.log('Google Sheets konnte nicht geladen werden, Fallback wird angezeigt.', err);
+        console.log('Google Sheets konnte nicht geladen werden.', err);
       });
   }
 
   // Vorstand laden
-  fetchSheet(GID_VORSTAND, function(rows) {
+  fetchSheet('Vorstand', function(rows) {
     if (!rows.length) return;
     var list = document.getElementById('vorstand-list');
     var title = document.getElementById('vorstand-title');
@@ -228,7 +227,7 @@
   });
 
   // Termine laden
-  fetchSheet(GID_TERMINE, function(rows) {
+  fetchSheet('Termine', function(rows) {
     if (!rows.length) return;
     var container = document.getElementById('termine-cards');
 
