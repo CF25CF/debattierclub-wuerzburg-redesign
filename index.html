@@ -60,9 +60,9 @@
 
 <section id="vorstand" class="section">
   <div class="section-inner two-col">
-    <img id="vorstand-img" src="images/vorstand.jpg" alt="Vorstand" class="vorstand-img" loading="lazy">
+    <img id="vorstand-img" src="" alt="Vorstand" class="vorstand-img" loading="lazy" style="display:none">
     <div>
-      <h2 id="vorstand-title">Vorstand 2024/25</h2>
+      <h2 id="vorstand-title">Vorstand</h2>
       <ul class="people" id="vorstand-list"></ul>
     </div>
   </div>
@@ -147,20 +147,13 @@
     return (tmp.textContent || tmp.innerText || '').trim();
   }
 
-  // CSV parsen (einfacher Parser, reicht fuer unsere Tabellen)
+  // CSV parsen — gibt Array von Arrays zurueck (Spaltenindex statt Headernamen)
   function parseCSV(text) {
     var lines = text.split('\n');
-    if (lines.length < 2) return [];
-    var headers = splitCSVLine(lines[0]);
     var rows = [];
-    for (var i = 1; i < lines.length; i++) {
+    for (var i = 0; i < lines.length; i++) {
       if (!lines[i].trim()) continue;
-      var values = splitCSVLine(lines[i]);
-      var obj = {};
-      headers.forEach(function(h, j) {
-        obj[clean(h)] = clean(values[j] || '');
-      });
-      rows.push(obj);
+      rows.push(splitCSVLine(lines[i]).map(clean));
     }
     return rows;
   }
@@ -194,18 +187,22 @@
   }
 
   // Vorstand laden
+  // Spalte A=Name, B=Rolle, C=Zeitraum, D=Bild-URL
+  // Zeile 0 = Header, Zeile 1+ = Daten
   fetchSheet('Vorstand', function(rows) {
-    if (!rows.length) return;
+    if (rows.length < 2) return;
     var list = document.getElementById('vorstand-list');
     var title = document.getElementById('vorstand-title');
     var img = document.getElementById('vorstand-img');
 
-    var zeitraum = rows[0]['Zeitraum'] || '';
+    // Zeitraum einmalig aus erster Datenzeile (Zeile 1)
+    var zeitraum = rows[1][2] || '';
     if (zeitraum) {
       title.textContent = 'Vorstand ' + zeitraum;
     }
 
-    var bildUrl = rows[0]['Bild-URL'] || '';
+    // Bild-URL aus erster Datenzeile, Spalte D (Index 3)
+    var bildUrl = rows[1][3] || '';
     if (bildUrl) {
       var match = bildUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
       if (match) {
@@ -213,30 +210,33 @@
       } else {
         img.src = bildUrl;
       }
+      img.style.display = '';
     }
 
+    // Vorstandsliste: Zeile 1+ (ueberspringe Header)
     var html = '';
-    rows.forEach(function(row) {
-      var name = row['Name'] || '';
-      var rolle = row['Rolle'] || '';
+    for (var i = 1; i < rows.length; i++) {
+      var name = rows[i][0] || '';
+      var rolle = rows[i][1] || '';
       if (name) {
         html += '<li><strong>' + name + '</strong> — ' + rolle + '</li>';
       }
-    });
+    }
     if (html) list.innerHTML = html;
   });
 
   // Termine laden
+  // Spalte A=Tag, B=Titel, C=Uhrzeit, D=Ort
   fetchSheet('Termine', function(rows) {
-    if (!rows.length) return;
+    if (rows.length < 2) return;
     var container = document.getElementById('termine-cards');
 
     var html = '';
-    rows.forEach(function(row, i) {
-      var tag = row['Tag'] || '';
-      var titel = row['Titel'] || '';
-      var uhrzeit = row['Uhrzeit'] || '';
-      var ort = row['Ort'] || '';
+    for (var i = 1; i < rows.length; i++) {
+      var tag = rows[i][0] || '';
+      var titel = rows[i][1] || '';
+      var uhrzeit = rows[i][2] || '';
+      var ort = rows[i][3] || '';
       var muted = (i === rows.length - 1) ? ' card-muted' : '';
       html += '<article class="card' + muted + '">';
       html += '<div class="card-day">' + tag + '</div>';
@@ -244,7 +244,7 @@
       html += '<p class="card-time">' + uhrzeit + '</p>';
       html += '<p>' + ort + '</p>';
       html += '</article>';
-    });
+    }
     if (html) container.innerHTML = html;
   });
 })();
