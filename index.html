@@ -186,60 +186,48 @@
       });
   }
 
-  // Vorstand laden
-  // Spalte A=Name, B=Rolle, C=Zeitraum, D=Bild-URL
-  // Zeile 0 = Header, Zeile 1+ = Daten
+  // Vorstand: A2-A4=Name, B2-B4=Rolle, C2=Zeitraum, D2=Bild
   fetchSheet('Vorstand', function(rows) {
     if (rows.length < 2) return;
     var list = document.getElementById('vorstand-list');
     var title = document.getElementById('vorstand-title');
     var img = document.getElementById('vorstand-img');
 
-    // Zeitraum einmalig aus erster Datenzeile (Zeile 1)
     var zeitraum = rows[1][2] || '';
-    if (zeitraum) {
-      title.textContent = 'Vorstand ' + zeitraum;
-    }
+    if (zeitraum) title.textContent = 'Vorstand ' + zeitraum;
 
-    // Bild-URL aus erster Datenzeile, Spalte D (Index 3)
     var bildUrl = rows[1][3] || '';
     if (bildUrl) {
       var match = bildUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-      if (match) {
-        img.src = 'https://lh3.googleusercontent.com/d/' + match[1];
-      } else {
-        img.src = bildUrl;
-      }
+      img.src = match ? 'https://lh3.googleusercontent.com/d/' + match[1] : bildUrl;
       img.style.display = '';
     }
 
-    // Vorstandsliste: nur Zeilen mit Name UND Rolle (max 3)
     var html = '';
-    var count = 0;
-    for (var i = 1; i < rows.length && count < 3; i++) {
+    // Exakt Zeilen 2-4 (Index 1-3)
+    for (var i = 1; i <= 3; i++) {
+      if (!rows[i]) break;
       var name = rows[i][0] || '';
       var rolle = rows[i][1] || '';
-      if (name && rolle && name.indexOf('=') === -1 && rolle.indexOf('=') === -1) {
-        html += '<li><strong>' + name + '</strong> — ' + rolle + '</li>';
-        count++;
-      }
+      if (name) html += '<li><strong>' + name + '</strong> — ' + rolle + '</li>';
     }
     if (html) list.innerHTML = html;
   });
 
-  // Termine laden
-  // Spalte A=Tag, B=Titel, C=Uhrzeit, D=Ort
+  // Termine: A2-A4=Tag, B2-B4=Titel, C2-C4=Uhrzeit, D2-D4=Ort
   fetchSheet('Termine', function(rows) {
     if (rows.length < 2) return;
     var container = document.getElementById('termine-cards');
-
     var html = '';
-    for (var i = 1; i < rows.length; i++) {
-      var tag = rows[i][0] || '';
+    // Exakt Zeilen 2-4 (Index 1-3)
+    for (var i = 1; i <= 3; i++) {
+      if (!rows[i]) break;
       var titel = rows[i][1] || '';
+      if (!titel) continue;
+      var tag = rows[i][0] || '';
       var uhrzeit = rows[i][2] || '';
       var ort = rows[i][3] || '';
-      var muted = (i === rows.length - 1) ? ' card-muted' : '';
+      var muted = (i === 3) ? ' card-muted' : '';
       html += '<article class="card' + muted + '">';
       html += '<div class="card-day">' + tag + '</div>';
       html += '<h3>' + titel + '</h3>';
