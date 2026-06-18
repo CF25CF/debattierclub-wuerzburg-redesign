@@ -189,7 +189,7 @@
     var list = document.getElementById('vorstand-list');
 
     // C2 = Zeitraum (rows[0][2])
-    var zeitraum = cell(rows, 0) ? cell(rows[0], 2) : '';
+    var zeitraum = rows[0] ? cell(rows[0], 2) : '';
     if (zeitraum) title.textContent = 'Vorstand ' + zeitraum;
 
     // D2 = Bild-URL (rows[0][3])
