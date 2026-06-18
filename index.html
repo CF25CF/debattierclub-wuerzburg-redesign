@@ -219,7 +219,7 @@
     for (var i = 1; i < rows.length && count < 3; i++) {
       var name = rows[i][0] || '';
       var rolle = rows[i][1] || '';
-      if (name && rolle && rolle.indexOf('=') === -1) {
+      if (name && rolle && name.indexOf('=') === -1 && rolle.indexOf('=') === -1) {
         html += '<li><strong>' + name + '</strong> — ' + rolle + '</li>';
         count++;
       }
