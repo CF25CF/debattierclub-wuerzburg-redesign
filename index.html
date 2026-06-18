@@ -163,49 +163,74 @@
 
 <script>
 (function() {
-  var SHEET_ID = '1ZEhmZkb-h-LixS8iaJuwoR4PCKgyQE8J2Lc7-hOt2i8';
+  var PUB_KEY = '2PACX-1vRqAVe-TkalyhTUWDQ-7JvhbDl7eP2hNFjQ0USyTES3UHxdkM-rkgkvlwygIudv1jVLegdRhk3d0uiL';
+  var BASE = 'https://docs.google.com/spreadsheets/d/e/' + PUB_KEY + '/pub?output=csv';
+  var GID_VORSTAND = '0';
+  var GID_TERMINE = '1792033316';
 
-  function fetchSheet(sheetName, callback) {
-    var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID +
-              '/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent(sheetName) +
-              '&headers=1';
-    fetch(url)
+  // Reiner Text: HTML-Tags und Formatierung entfernen
+  function clean(str) {
+    var tmp = document.createElement('div');
+    tmp.innerHTML = str;
+    return (tmp.textContent || tmp.innerText || '').trim();
+  }
+
+  // CSV parsen (einfacher Parser, reicht fuer unsere Tabellen)
+  function parseCSV(text) {
+    var lines = text.split('\n');
+    if (lines.length < 2) return [];
+    var headers = splitCSVLine(lines[0]);
+    var rows = [];
+    for (var i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      var values = splitCSVLine(lines[i]);
+      var obj = {};
+      headers.forEach(function(h, j) {
+        obj[clean(h)] = clean(values[j] || '');
+      });
+      rows.push(obj);
+    }
+    return rows;
+  }
+
+  function splitCSVLine(line) {
+    var result = [], current = '', inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var c = line[i];
+      if (c === '"') {
+        if (inQuotes && line[i + 1] === '"') { current += '"'; i++; }
+        else { inQuotes = !inQuotes; }
+      } else if (c === ',' && !inQuotes) {
+        result.push(current); current = '';
+      } else {
+        current += c;
+      }
+    }
+    result.push(current);
+    return result;
+  }
+
+  function fetchSheet(gid, callback) {
+    fetch(BASE + '&gid=' + gid)
       .then(function(r) { return r.text(); })
-      .then(function(text) {
-        var json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        var rows = [];
-        // Spaltennamen aus cols.label (= Zeile 1 der Tabelle)
-        var headers = json.table.cols.map(function(c, i) {
-          return c.label || String.fromCharCode(65 + i);
-        });
-        json.table.rows.forEach(function(row) {
-          var obj = {};
-          row.c.forEach(function(cell, i) {
-            obj[headers[i]] = cell ? (cell.f || String(cell.v) || '') : '';
-          });
-          rows.push(obj);
-        });
-        callback(rows);
-      })
+      .then(function(text) { callback(parseCSV(text)); })
       .catch(function(err) {
         console.log('Google Sheets konnte nicht geladen werden, Fallback wird angezeigt.', err);
       });
   }
 
   // Vorstand laden
-  fetchSheet('Vorstand', function(rows) {
+  fetchSheet(GID_VORSTAND, function(rows) {
     if (!rows.length) return;
     var list = document.getElementById('vorstand-list');
     var title = document.getElementById('vorstand-title');
     var img = document.getElementById('vorstand-img');
 
-    // Zeitraum aus erster Zeile
     var zeitraum = rows[0]['Zeitraum'] || '';
     if (zeitraum) {
       title.textContent = 'Vorstand ' + zeitraum;
     }
 
-    // Bild-URL aus erster Zeile
     var bildUrl = rows[0]['Bild-URL'] || '';
     if (bildUrl) {
       var match = bildUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
@@ -216,7 +241,6 @@
       }
     }
 
-    // Vorstandsliste aufbauen
     var html = '';
     rows.forEach(function(row) {
       var name = row['Name'] || '';
@@ -229,7 +253,7 @@
   });
 
   // Termine laden
-  fetchSheet('Termine', function(rows) {
+  fetchSheet(GID_TERMINE, function(rows) {
     if (!rows.length) return;
     var container = document.getElementById('termine-cards');
 
