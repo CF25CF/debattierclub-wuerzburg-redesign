@@ -213,13 +213,15 @@
       img.style.display = '';
     }
 
-    // Vorstandsliste: Zeile 1+ (ueberspringe Header)
+    // Vorstandsliste: nur Zeilen mit Name UND Rolle (max 3)
     var html = '';
-    for (var i = 1; i < rows.length; i++) {
+    var count = 0;
+    for (var i = 1; i < rows.length && count < 3; i++) {
       var name = rows[i][0] || '';
       var rolle = rows[i][1] || '';
-      if (name) {
+      if (name && rolle && rolle.indexOf('=') === -1) {
         html += '<li><strong>' + name + '</strong> — ' + rolle + '</li>';
+        count++;
       }
     }
     if (html) list.innerHTML = html;
