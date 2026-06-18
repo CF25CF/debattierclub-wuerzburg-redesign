@@ -152,8 +152,11 @@
     var lines = text.split('\n');
     var rows = [];
     for (var i = 0; i < lines.length; i++) {
-      if (!lines[i].trim()) continue;
-      rows.push(splitCSVLine(lines[i]).map(clean));
+      if (lines[i].trim() === '') {
+        rows.push([]);
+      } else {
+        rows.push(splitCSVLine(lines[i]).map(clean));
+      }
     }
     return rows;
   }
